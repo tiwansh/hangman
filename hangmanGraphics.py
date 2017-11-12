@@ -10,23 +10,20 @@ charRight = []
 state = 0
 
 print word
+wordList = list(word)
 #define states of hangman
+wordAnswer = []
+for i in range(len(word)):
+	wordAnswer.append('_')
 
 maxStates = 6
 #keep on taking inputs while the either wins or hangman reaches state 7
 def printState(guesses):
 	mySting = ""
-	if guesses == 0:
+	if guesses == 1:
 		myString = "________      "
 		myString  = myString + '\n' + "|      |      "
 		myString  = myString + '\n' + "|             "
-		myString  = myString + '\n' + "|             "
-		myString  = myString + '\n' + "|             "
-		myString  = myString + '\n' + "|             "
-	elif guesses == 1:
-		myString  = "________      "
-		myString  = myString + '\n' + "|      |      "
-		myString  = myString + '\n' + "|      0      "
 		myString  = myString + '\n' + "|             "
 		myString  = myString + '\n' + "|             "
 		myString  = myString + '\n' + "|             "
@@ -34,24 +31,31 @@ def printState(guesses):
 		myString  = "________      "
 		myString  = myString + '\n' + "|      |      "
 		myString  = myString + '\n' + "|      0      "
-		myString  = myString + '\n' + "|     /       "
+		myString  = myString + '\n' + "|             "
 		myString  = myString + '\n' + "|             "
 		myString  = myString + '\n' + "|             "
 	elif guesses == 3:
 		myString  = "________      "
-		myString  = "|      |      "
+		myString  = myString + '\n' + "|      |      "
+		myString  = myString + '\n' + "|      0      "
+		myString  = myString + '\n' + "|     /       "
+		myString  = myString + '\n' + "|             "
+		myString  = myString + '\n' + "|             "
+	elif guesses == 4:
+		myString  = "________      "
+		myString  = myString + "\n" + "|      |      "
 		myString  = myString + '\n' + "|      0      "
 		myString  = myString + '\n' + "|     /|      "
 		myString  = myString + '\n' + "|             "
 		myString  = myString + '\n' + "|             "
-	elif guesses == 4:
+	elif guesses == 5:
 		myString = "________      "
 		myString  = myString + '\n' + "|      |      "
 		myString  = myString + '\n' + "|      0      "
 		myString  = myString + '\n' + "|     /|\     "
 		myString  = myString + '\n' + "|             "
 		myString  = myString + '\n' + "|             "
-	elif guesses == 5:
+	elif guesses == 6:
 		myString = "________      "
 		myString  = myString + '\n' + "|      |      "
 		myString  = myString + '\n' + "|      0      "
@@ -81,11 +85,16 @@ def kaam():
  		printState(state)
  	else:
  		charRight.append(char_entered)
+ 		#add it to word
+ 		for i in range(len(wordList)):
+ 			if(char_entered == wordList[i]):
+ 				wordAnswer[i] = char_entered
  	if(len(charGuessed) != 0):
 		vAll.set("Character guessed : " + str(charGuessed))
 	if(len(charRight) != 0):
-		vCorrect.set("Right Characters guessed : " + str(charRight))
- 	if(len(charRight) == len(word)):
+		#create word
+		vCorrect.set("Right Characters guessed : " + str(wordAnswer))
+ 	if(set(wordAnswer) == set(wordList)):
  		vResult.set("You Won !")
  	if(state == 6):
  		vResult.set("You Lost !") 			
@@ -96,7 +105,7 @@ root.title("Hangman : The guessing game")
 root.geometry('500x500')
 root.configure(background = 'green')
 
-topFrame = Frame(root, bg= "blue")
+topFrame = Frame(root, bg= "blue", bd = 5)
 topFrame.pack(side= TOP)
 #create a label in topframe toshow the status of hangman
 vHangman = StringVar()
